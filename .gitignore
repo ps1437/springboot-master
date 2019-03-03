@@ -1,0 +1,20 @@
+# Log file
+*.log
+
+# Compiled class file
+*.class
+
+
+# Package Files #
+*.jar
+*.war
+*.zip
+*.cmd
+*.classpath
+*.settings
+*.project
+*.mvn
+mvnw
+target
+*.DS_Store
+bin
