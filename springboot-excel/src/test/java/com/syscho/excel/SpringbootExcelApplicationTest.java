@@ -1,13 +1,13 @@
-package com.syscho.excel.springbootexcel;
+package com.syscho.excel;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringbootExcelApplicationTests {
+public class SpringbootExcelApplicationTest {
 
 	@Test
-	void contextLoads() {
+	public void contextLoad() {
 	}
 
 }

@@ -42,7 +42,7 @@ public class ExcelController {
 
 			if (originalFilename.endsWith(EXCEL_XLSX)) {
 				response = excelReader.readExcelX(file.getInputStream());
-			} else {
+			} else if (originalFilename.endsWith(EXCEL_XLS)) {
 				response = excelReader.readExcel(file.getInputStream());
 			}
 			return ResponseEntity.ok(response);
@@ -53,6 +53,12 @@ public class ExcelController {
 	}
 
 }
+
+
+
+
+
+
 
 
 
