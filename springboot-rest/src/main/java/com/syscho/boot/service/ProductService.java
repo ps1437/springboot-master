@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.syscho.boot.dao.ProductDao;
-import com.syscho.boot.vo.Product;
+import com.syscho.boot.entity.ProductEntity;
+import com.syscho.boot.repo.ProductRepository;
 
 /**
  * @author Soni
@@ -16,19 +16,19 @@ import com.syscho.boot.vo.Product;
 public class ProductService {
 
 	@Autowired
-	private ProductDao productDao;
+	private ProductRepository productDao;
 
-	public List<Product> getProducts() {
+	public List<ProductEntity> getProducts() {
 
 		return productDao.findAll();
 	}
 
-	public Product getProductById(Long prodId) {
+	public ProductEntity getProductById(Long prodId) {
 
 		return productDao.findByProductId(prodId);
 	}
 
-	public List<Product> getProductsByName(String prodName) {
+	public List<ProductEntity> getProductsByName(String prodName) {
 
 		return productDao.findAllByProductName(prodName.toLowerCase());
 	}
@@ -38,12 +38,12 @@ public class ProductService {
 		return productDao.deleteByProductId(prodId);
 	}
 
-	public Product saveProduct(Product product) {
+	public ProductEntity saveProduct(ProductEntity product) {
 
 		return productDao.save(product);
 	}
 
-	public Product updateProduct(Product product) {
+	public ProductEntity updateProduct(ProductEntity product) {
 		return productDao.save(product);
 	}
 

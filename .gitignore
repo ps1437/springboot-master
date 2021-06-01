@@ -22,3 +22,6 @@ mvnw
 target
 *.DS_Store
 bin
+.recommenders
+.metadata
+RemoteSystemsTempFiles
