@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 
 @Configuration
 @AllArgsConstructor
-public class Config implements WebMvcConfigurer {
+public class InterceptorConfig implements WebMvcConfigurer {
 
 	private RequestInterceptor requestInterceptor;
 

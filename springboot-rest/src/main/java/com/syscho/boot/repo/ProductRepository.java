@@ -3,20 +3,20 @@ package com.syscho.boot.repo;
 import java.util.List;
 
 import javax.transaction.Transactional;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.syscho.boot.entity.ProductEntity;
+import com.syscho.boot.model.ProductEntity;
 
 @Repository
-@Transactional
 public interface ProductRepository extends CrudRepository<ProductEntity, Long> {
 
-	public List<ProductEntity> findAll();
+    List<ProductEntity> findAll();
 
-	public ProductEntity findByProductId(Long prodId);
+    ProductEntity findByProductId(Long prodId);
 
-	public List<ProductEntity> findAllByProductName(String prodName);
+    List<ProductEntity> findAllByProductNameIgnoreCase(String prodName);
 
-	public int deleteByProductId(long prodId);
+    int deleteByProductId(long prodId);
 }

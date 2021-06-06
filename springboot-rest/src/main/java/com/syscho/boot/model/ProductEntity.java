@@ -1,8 +1,6 @@
-package com.syscho.boot.entity;
+package com.syscho.boot.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,10 +14,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="Products")
 public class ProductEntity {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long productId;
 	private String productName;
 	private int productPrice;

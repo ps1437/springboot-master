@@ -1,50 +1,86 @@
 package com.syscho.boot.service;
 
-import java.util.List;
-
+import com.syscho.boot.exception.NoDataFoundException;
+import com.syscho.boot.model.ProductEntity;
+import com.syscho.boot.repo.ProductRepository;
+import com.syscho.boot.vo.ProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.syscho.boot.entity.ProductEntity;
-import com.syscho.boot.repo.ProductRepository;
+import java.util.List;
+
+import static com.syscho.boot.utils.CommonUtils.convertEntityToVo;
+import static com.syscho.boot.utils.CommonUtils.convertVoToEntity;
 
 /**
  * @author Soni
- *
  */
 @Service
 public class ProductService {
 
-	@Autowired
-	private ProductRepository productDao;
+    public static final String INVALID_PRODUCT_ID = "Invalid product id %d ";
+    public static final String DELETED_SUCCESSFULLY = " %d id Deleted Successfully !!";
 
-	public List<ProductEntity> getProducts() {
+    @Autowired
+    private ProductRepository productDao;
 
-		return productDao.findAll();
-	}
+    public List<ProductVO> getProducts() {
 
-	public ProductEntity getProductById(Long prodId) {
+        return convertEntityToVo(productDao.findAll());
+    }
 
-		return productDao.findByProductId(prodId);
-	}
+    public ProductVO getProductById(Long prodId) {
 
-	public List<ProductEntity> getProductsByName(String prodName) {
+        ProductEntity product = productDao.findByProductId(prodId);
+        if (null == product) {
+            throw new NoDataFoundException(prodId);
+        }
+        return convertEntityToVo(product);
+    }
 
-		return productDao.findAllByProductName(prodName.toLowerCase());
-	}
+    public List<ProductVO> getProductsByName(String prodName) {
 
-	public int deleteProdById(long prodId) {
+        return convertEntityToVo(productDao.findAllByProductNameIgnoreCase(prodName));
+    }
 
-		return productDao.deleteByProductId(prodId);
-	}
+    @Transactional
+    public String deleteProductById(long prodId) {
 
-	public ProductEntity saveProduct(ProductEntity product) {
+        int count = productDao.deleteByProductId(prodId);
+        if (count == 0) {
+            throw new NoDataFoundException(prodId);
+        }
 
-		return productDao.save(product);
-	}
+        return String.format(DELETED_SUCCESSFULLY, prodId);
+    }
 
-	public ProductEntity updateProduct(ProductEntity product) {
-		return productDao.save(product);
-	}
+    @Transactional
+    public ProductVO saveProduct(ProductVO product) {
+        ProductEntity productEntity = convertVoToEntity(product);
+        ProductEntity save = productDao.save(productEntity);
+        product.setProductId(save.getProductId());
+        return product;
+    }
+
+    @Transactional
+    public ProductVO updateProduct(ProductVO updatedProduct) {
+
+        ProductEntity oldProduct = productDao.findByProductId(updatedProduct.getProductId());
+        if (null == oldProduct) {
+            throw new RuntimeException(String.format(INVALID_PRODUCT_ID, updatedProduct.getProductId()));
+        }
+        ProductEntity productEntity = convertVoToEntity(updatedProduct);
+        ProductEntity save = productDao.save(productEntity);
+        updatedProduct.setProductId(save.getProductId());
+        return updatedProduct;
+    }
 
 }
+
+
+
+
+
+
+

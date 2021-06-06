@@ -17,39 +17,39 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class RequestInterceptor implements HandlerInterceptor {
 
-	private static final String START = "START";
+    private static final String START = "START";
 
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
-		ZonedDateTime startTime = ZonedDateTime.now();
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        ZonedDateTime startTime = ZonedDateTime.now();
 
-		Long start = startTime.toInstant().toEpochMilli();
-		MDC.put(START, start);
-		log.info("RequestInterceptor : executing preHandle method  :started at {}",
-				startTime.format(DateTimeFormatter.ISO_TIME));
-		return true;
-	}
+        Long start = startTime.toInstant().toEpochMilli();
+        MDC.put(START, start);
+        log.info("RequestInterceptor : executing preHandle method  :started at {}",
+                startTime.format(DateTimeFormatter.ISO_TIME));
+        return true;
+    }
 
-	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
-			throws Exception {
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 
-		Long start = Long.parseLong((String) MDC.get(START));
-		ZonedDateTime endTime = ZonedDateTime.now();
-		Long end = endTime.toInstant().toEpochMilli();
+        if (null != MDC.get(START)) {
+            Long start = Long.parseLong((String) MDC.get(START));
+            ZonedDateTime endTime = ZonedDateTime.now();
+            Long end = endTime.toInstant().toEpochMilli();
 
-		log.info("RequestInterceptor : executing afterCompletion method :ended at {}  : took  {} ms",
-				endTime.format(DateTimeFormatter.ISO_TIME), (end - start));
-		MDC.clear();
+            log.info("RequestInterceptor : executing afterCompletion method :ended at {}  : took  {} ms",
+                    endTime.format(DateTimeFormatter.ISO_TIME), (end - start));
+        }
+        MDC.clear();
 
-	}
+    }
 
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) throws Exception {
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+                           ModelAndView modelAndView) throws Exception {
 
-		log.info("RequestInterceptor : executing postHandle method ");
-	}
+        log.info("RequestInterceptor : executing postHandle method ");
+    }
 
 }

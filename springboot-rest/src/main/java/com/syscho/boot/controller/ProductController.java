@@ -1,59 +1,50 @@
 package com.syscho.boot.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.syscho.boot.entity.ProductEntity;
 import com.syscho.boot.service.ProductService;
+import com.syscho.boot.vo.ProductVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import lombok.AllArgsConstructor;
+import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author Soni
- *
  */
 @RestController
 @RequestMapping("/product")
-@AllArgsConstructor
 public class ProductController {
 
-	private ProductService productService;
+    @Autowired
+    private ProductService productService;
 
-	@GetMapping("/{id}")
-	public ProductEntity getProductById(@PathVariable("id") long prodId) {
-		return productService.getProductById(prodId);
-	}
+    @GetMapping("/{id}")
+    public ProductVO getProductById(@PathVariable("id") long prodId) {
+        return productService.getProductById(prodId);
+    }
 
-	@GetMapping("/name/{name}")
-	public List<ProductEntity> getProductsByName(@PathVariable("name") String prodName) {
-		return productService.getProductsByName(prodName);
-	}
+    @GetMapping("/name/{name}")
+    public List<ProductVO> getProductsByName(@PathVariable("name") String prodName) {
+        return productService.getProductsByName(prodName);
+    }
 
-	@GetMapping
-	public List<ProductEntity> getProducts() {
-		return productService.getProducts();
-	}
+    @GetMapping
+    public List<ProductVO> getProducts() {
+        return productService.getProducts();
+    }
 
-	@PutMapping
-	public ProductEntity saveProduct(ProductEntity product) {
-		return productService.saveProduct(product);
-	}
+    @PostMapping
+    public ProductVO saveProduct(@RequestBody @Valid ProductVO product) {
+        return productService.saveProduct(product);
+    }
 
-	@PostMapping
-	public ProductEntity updateProduct(@RequestBody ProductEntity product) {
-		return productService.updateProduct(product);
-	}
+    @PutMapping
+    public ProductVO updateProduct(@RequestBody @Valid ProductVO product) {
+        return productService.updateProduct(product);
+    }
 
-	@DeleteMapping("/{id}")
-	public int deleteProdById(@PathVariable("id") long prodId) {
-		return productService.deleteProdById(prodId);
-	}
+    @DeleteMapping("/{id}")
+    public String deleteProductById(@PathVariable("id") long prodId) {
+        return productService.deleteProductById(prodId);
+    }
 }

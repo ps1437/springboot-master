@@ -9,6 +9,8 @@ RemoteSystemsTempFiles
 *.metadata
 *.recommenders
 
+*.idea
+*.idea
 # Package Files #
 *.jar
 *.war
